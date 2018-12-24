@@ -1,3 +1,2 @@
 # Pracitce-Grading_System
-## About
-* A PHP Practice Project
+A PHP Practice Project
