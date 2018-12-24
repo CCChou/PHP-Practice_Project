@@ -1,0 +1,28 @@
+CREATE TABLE UserList(
+    id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    account varchar(30) UNIQUE,
+    password varchar(30) NOT NULL,
+    isScored bool,
+    roleId INT(6),
+    FOREIGN KEY(roleId) REFERENCES RoleList(id)
+);
+
+CREATE TABLE RoleList(
+    id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    roleName varchar(30) NOT NULL
+);
+
+CREATE TABLE Score(
+	id INT(6) AUTO_INCREMENT PRIMARY KEY,
+    scorer INT(6),
+    userId INT(6),
+    score INT,
+    FOREIGN KEY(scorer) REFERENCES UserList(id),
+    FOREIGN KEY(userId) REFERENCES UserList(id)
+);
+
+INSERT INTO RoleList(id, roleName)
+VALUES(1, 'MANAGER'),(2, 'EMPLOYEE');
+
+INSERT INTO UserList(id, account, password, roleId)
+VALUES(1, 'admin', 'admin', 1);
