@@ -11,8 +11,8 @@ if(empty($account)) {
     return;
 }
 
-$userListDao = new UserListDao();
-$userList = $userListDao->getAllUserScore();
+$userDao = new UserDao();
+$userList = $userDao->getAllUserScore();
 ?>
 <!DOCTYPE html>
 <html>
@@ -36,7 +36,14 @@ $userList = $userListDao->getAllUserScore();
 <body>
 
 <h1>Manager Page</h1>
-<form action="./register.php" method="post">
+<br>
+<form action="./logout.php" method="post">
+    <input type="submit" value="Logout">
+</form>
+<br>
+<hr/>
+<br>
+<form action="./register.php" method="get">
     <input type="submit" value="Add User"/>
 </form>
 <br>
@@ -50,7 +57,8 @@ $userList = $userListDao->getAllUserScore();
     </tr>
     <?php
     foreach($userList as &$user) {
-        echo "<tr><td>$user->account</td><td>" . (float)$user->score . "</td><td></td></tr>";
+        $isScored = $user->isScored  ? "yes" : "not yet";
+        echo "<tr><td>$user->account</td><td>" . (float)$user->score . "</td><td>$isScored</td></tr>";
     }
     ?>
 </table>

@@ -1,7 +1,8 @@
 <?php
 include "userdto.php";
+include "user.php";
 
-class UserListDao {
+class UserDao {
     private $servername = "localhost:3306";
     private $username = "root";
     private $password = "root";
@@ -20,8 +21,8 @@ class UserListDao {
         try {
             $this->connect();
             // FIXME SQL INJECTION...
-            $sql = "SELECT password FROM UserList WHERE account = '" . $account . "'";
-            $result = mysqli_query($this->conn, $sql);
+            $sql = "SELECT password FROM GS_User WHERE account = '" . $account . "'";
+            $result = $this->conn->query($sql);
     
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
@@ -38,8 +39,8 @@ class UserListDao {
         try {
             $this->connect();
             // FIXME SQL INJECTION...
-            $sql = "SELECT roleId FROM UserList WHERE account = '$account'";
-            $result = mysqli_query($this->conn, $sql);
+            $sql = "SELECT roleId FROM GS_User WHERE account = '$account'";
+            $result = $this->conn->query($sql);
 
             if ($result->num_rows > 0) {
                 $row = $result->fetch_assoc();
@@ -56,8 +57,8 @@ class UserListDao {
         try {
             $this->connect();
             // FIXME SQL INJECTION...
-            $sql = "SELECT account FROM UserList WHERE roleId <> 1 AND account <> '$account'";
-            $result = mysqli_query($this->conn, $sql);
+            $sql = "SELECT account FROM GS_User WHERE roleId <> 1 AND account <> '$account'";
+            $result = $this->conn->query($sql);
             $resultList = array();
 
             if ($result->num_rows > 0) {
@@ -75,8 +76,8 @@ class UserListDao {
         try {
             $this->connect();
             // FIXME SQL INJECTION...
-            $sql = "SELECT user.id, user.account, IFNULL(score.score, 0) score FROM UserList user LEFT JOIN (SELECT userid, sum(score) score FROM score GROUP BY userid) score ON user.id = score.userid WHERE user.roleId <> 1";
-            $result = mysqli_query($this->conn, $sql);
+            $sql = "SELECT user.id, user.account, IFNULL(score.score, 0) score FROM GS_User user LEFT JOIN (SELECT userid, sum(score) score FROM score GROUP BY userid) score ON user.id = score.userid WHERE user.roleId <> 1";
+            $result = $this->conn->query($sql);
             $resultList = array();
 
             if ($result->num_rows > 0) {
@@ -91,8 +92,18 @@ class UserListDao {
         }
     }
 
-    function createUser() {
-        
+    function createUser($user) {
+        try {
+            $this->connect();
+            // FIXME SQL INJECTION...
+            $sql = "INSERT INTO GS_User(account, password, roleId) VALUES('$user->account', '$user->password', $user->roleId)";
+            if($this->conn->query($sql) === TRUE) {
+                return true;
+            }
+            return false;
+        } finally {
+            $this->close();
+        } 
     }
 
     function close() {

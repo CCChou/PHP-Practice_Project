@@ -8,7 +8,7 @@ $accountErr = "";
 $passwordErr = "";
 $loginError = "";
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // double check in backend
     if(isLoginParamEmpty()) {
         setErrorMsg();

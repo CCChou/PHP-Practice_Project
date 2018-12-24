@@ -1,16 +1,12 @@
 <?php
-class UserList {
-    private $id;
+class User {
     private $account;
     private $password;
-    private $isScored;
     private $roleId;
 
-    function __construct($id, $account, $password, $isScored, $roleId) {
-        $this->id = $id;
+    function __construct($account, $password, $roleId) {
         $this->account = $account;
         $this->password = $password;
-        $this->isScored = $isScored;
         $this->roleId = $roleId;
     }
 

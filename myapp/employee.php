@@ -13,15 +13,15 @@
 -->
 <?php
 session_start();
-include "userlistdao.php";
+include "userdao.php";
 
 $account = $_SESSION["user"];
 if(empty($account)) {
     header("Location: ./login.php");
 }
 
-$userListDao = new UserListDao();
-$userAccountList = $userListDao->getUserAccountsExceptSpecificAccount($account);
+$userDao = new UserDao();
+$userAccountList = $userDao->getUserAccountsExceptSpecificAccount($account);
 ?>
 <!DOCTYPE html>
 <html>
@@ -45,7 +45,13 @@ $userAccountList = $userListDao->getUserAccountsExceptSpecificAccount($account);
 <body>
 
 <h1>Employee Page</h1>
-
+<br>
+<form action="./logout.php" method="post">
+    <input type="submit" value="Logout">
+</form>
+<br>
+<hr/>
+<br>
 <form action="./employee.php" method="post">
     <table style="width:50%">
         <tr>
@@ -64,6 +70,8 @@ $userAccountList = $userListDao->getUserAccountsExceptSpecificAccount($account);
         }
         ?>
     </table>
+    <br><br>
+    <input type="submit" value="Submit">
 </form>
 </body>
 </html>
