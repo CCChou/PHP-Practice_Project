@@ -1,13 +1,13 @@
-CREATE TABLE UserList(
+CREATE TABLE GS_User(
     id INT(6) AUTO_INCREMENT PRIMARY KEY,
     account varchar(30) UNIQUE,
     password varchar(30) NOT NULL,
-    isScored bool,
+    isScored bool DEFAULT false,
     roleId INT(6),
-    FOREIGN KEY(roleId) REFERENCES RoleList(id)
+    FOREIGN KEY(roleId) REFERENCES GS_Role(id)
 );
 
-CREATE TABLE RoleList(
+CREATE TABLE GS_Role(
     id INT(6) AUTO_INCREMENT PRIMARY KEY,
     roleName varchar(30) NOT NULL
 );
@@ -21,8 +21,8 @@ CREATE TABLE Score(
     FOREIGN KEY(userId) REFERENCES UserList(id)
 );
 
-INSERT INTO RoleList(id, roleName)
+INSERT INTO GS_Role(id, roleName)
 VALUES(1, 'MANAGER'),(2, 'EMPLOYEE');
 
-INSERT INTO UserList(id, account, password, roleId)
+INSERT INTO GS_User(id, account, password, roleId)
 VALUES(1, 'admin', 'admin', 1);
