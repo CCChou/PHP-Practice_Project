@@ -1,27 +1,52 @@
-<!-- 
-    check the user fill or not first 
-    y: show message
-    n: form to fill...
--->
-
-<!--
-    there's a problem
-    what if an employee finish this form, but the manager add new employee
-    make everyone fill this again??
-    and if need to fill this again should score all employess again??
-    bad requirement...
--->
 <?php
 session_start();
-include "userdao.php";
+include "employeeservice.php";
 
 $account = $_SESSION["user"];
 if(empty($account)) {
     header("Location: ./login.php");
 }
 
-$userDao = new UserDao();
-$userAccountList = $userDao->getUserAccountsExceptSpecificAccount($account);
+$employeeService = new EmployeeService();
+if($employeeService->isScored($account)) {
+    echo "you have done this!!";
+    unset($_SESSION["user"]);  // logout for test
+    return;
+}
+
+$employeeErr = "";
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $userList = $employeeService->getOtherEmployees($account);
+    if(isParamVaild($userList)) {
+        $userScoreList = createUserScoreList($userList);
+        $employeeService->saveScore($account, $userScoreList);
+        
+        echo "Congratulations you have done this!!";
+        unset($_SESSION["user"]);  // logout for test
+        return;
+    } else {
+        $employeeErr = "please rate everyone!!";
+    }
+}
+
+$userList = $employeeService->getOtherEmployees($account);
+
+function isParamVaild($userList) {
+    foreach($userList as $user) {
+        if(empty($_POST[$user->id])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function createUserScoreList($userList) {
+    $userScoreList = array();
+    foreach($userList as $user) {
+        $userScoreList[$user->id] = $_POST[$user->id];
+    }
+    return $userScoreList;
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -52,6 +77,7 @@ $userAccountList = $userDao->getUserAccountsExceptSpecificAccount($account);
 <br>
 <hr/>
 <br>
+<?php echo $employeeErr; ?>
 <form action="./employee.php" method="post">
     <table style="width:50%">
         <tr>
@@ -59,13 +85,13 @@ $userAccountList = $userDao->getUserAccountsExceptSpecificAccount($account);
             <th>Scores</th> 
         </tr>
         <?php
-        foreach($userAccountList as &$account) {
-            echo "<tr><td>$account</td><td>" .
-                "<input type='radio' name='$account' value='1'> 1" .
-                "<input type='radio' name='$account' value='2'> 2" .
-                "<input type='radio' name='$account' value='3'> 3" .
-                "<input type='radio' name='$account' value='4'> 4" .
-                "<input type='radio' name='$account' value='5'> 5" .
+        foreach($userList as &$user) {
+            echo "<tr><td>$user->account</td><td>" .
+                "<input type='radio' name='$user->id' value='1' required> 1" .
+                "<input type='radio' name='$user->id' value='2'> 2" .
+                "<input type='radio' name='$user->id' value='3' checked='checked'> 3" .
+                "<input type='radio' name='$user->id' value='4'> 4" .
+                "<input type='radio' name='$user->id' value='5'> 5" .
                 "</td></tr>";
         }
         ?>

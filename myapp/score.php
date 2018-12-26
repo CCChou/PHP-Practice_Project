@@ -1,10 +1,9 @@
 <?php
-class User {
+class Score {
     private $id;
-    private $account;
-    private $password;
-    private $roleId;
-    private $isScored;
+    private $scorer;
+    private $userId;
+    private $score;
 
     function __get($name) {
         if(!empty($this->$name)) {

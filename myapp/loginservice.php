@@ -2,9 +2,14 @@
 include "userdao.php";
 
 class LoginService {
+	private $userDao;
+
+	function __construct() {
+		$this->userDao = new UserDao();
+	}
+
 	function login($account, $password) {
-		$userDao = new UserDao();
-		$pwdFromDB = $userDao->getPwdByAccount($account);
+		$pwdFromDB = $this->userDao->getPwdByAccount($account);
 
 		if(empty($pwdFromDB)) {
 			return false;
@@ -13,8 +18,7 @@ class LoginService {
 	}
 
 	function isManager($account) {
-		$userDao = new UserDao();
-		$roleId = $userDao->getRoleByAccount($account);
+		$roleId = $this->userDao->getRoleByAccount($account);
 
 		return $roleId != null && $roleId == 1;
 	}

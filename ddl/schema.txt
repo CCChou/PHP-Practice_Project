@@ -17,8 +17,8 @@ CREATE TABLE Score(
     scorer INT(6),
     userId INT(6),
     score INT,
-    FOREIGN KEY(scorer) REFERENCES UserList(id),
-    FOREIGN KEY(userId) REFERENCES UserList(id)
+    FOREIGN KEY(scorer) REFERENCES GS_User(id),
+    FOREIGN KEY(userId) REFERENCES GS_User(id)
 );
 
 INSERT INTO GS_Role(id, roleName)

@@ -56,7 +56,7 @@ $userList = $userDao->getAllUserScore();
         <th>isScored</th>
     </tr>
     <?php
-    foreach($userList as &$user) {
+    foreach($userList as $user) {
         $isScored = $user->isScored  ? "yes" : "not yet";
         echo "<tr><td>$user->account</td><td>" . (float)$user->score . "</td><td>$isScored</td></tr>";
     }

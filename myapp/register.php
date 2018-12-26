@@ -26,7 +26,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else if(strcmp($password, $confirm) !== 0) {
         $registerMsg = "Password and Confirm is not the same";
     } else {
-        $user = new User($account, $password, 2);
+        $user = new User();
+        $user->account = $account;
+        $user->password = $password;
+        $user->roleId = 2;
         $userDao = new UserDao();
         if($userDao->createUser($user)) {
             $registerMsg = "Create User Success";
