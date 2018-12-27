@@ -76,7 +76,7 @@ class UserDao {
         try {
             $this->connect();
             // FIXME SQL INJECTION...
-            $sql = "SELECT * FROM GS_User WHERE account <> '$account' AND roleId <> 1";
+            $sql = "SELECT * FROM GS_User WHERE account <> '$account' AND roleId <> 1 ORDER BY account";
             $result = $this->conn->query($sql);
             $resultList = array();
 
@@ -159,7 +159,7 @@ class UserDao {
         try {
             $this->connect();
             // FIXME SQL INJECTION...
-            $sql = "SELECT user.id, user.account, IFNULL(score.score, 0) score, user.isScored FROM GS_User user LEFT JOIN (SELECT userid, sum(score) score FROM score GROUP BY userid) score ON user.id = score.userid WHERE user.roleId <> 1";
+            $sql = "SELECT user.id, user.account, IFNULL(score.score, 0) score, user.isScored FROM GS_User user LEFT JOIN (SELECT userid, sum(score) score FROM score GROUP BY userid) score ON user.id = score.userid WHERE user.roleId <> 1 ORDER BY account";
             $result = $this->conn->query($sql);
             $resultList = array();
 
