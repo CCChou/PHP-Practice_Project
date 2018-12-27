@@ -1,7 +1,7 @@
 <?php
-include "userdto.php";
-include "user.php";
-include "score.php";
+include "entity/userdto.php";
+include "entity/user.php";
+include "entity/score.php";
 
 class UserDao {
     private $servername = "localhost:3306";
@@ -49,25 +49,6 @@ class UserDao {
             } else {
                 return null;
             }
-        } finally {
-            $this->close();
-        }
-    }
-
-    function getUserIdsExceptSpecificAccount($account) {
-        try {
-            $this->connect();
-            // FIXME SQL INJECTION...
-            $sql = "SELECT id FROM GS_User WHERE roleId <> 1 AND account <> '$account'";
-            $result = $this->conn->query($sql);
-            $resultList = array();
-
-            if ($result->num_rows > 0) {
-                while($row = $result->fetch_assoc()) {
-                    array_push($resultList, $row["id"]);
-                }
-            }
-            return $resultList;
         } finally {
             $this->close();
         }

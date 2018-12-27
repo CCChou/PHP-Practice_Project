@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "employeeservice.php";
+include "service/employeeservice.php";
 
 $account = $_SESSION["user"];
 if(empty($account)) {
@@ -33,7 +33,10 @@ $userList = $employeeService->getOtherEmployees($account);
 
 function isParamVaild($userList) {
     foreach($userList as $user) {
-        if(empty($_POST[$user->id])) {
+        $score = $_POST[$user->id];
+        if(empty($score)) {
+            return false;
+        } else if($score > 5 || $score < 1) {
             return false;
         }
     }

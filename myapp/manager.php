@@ -1,6 +1,6 @@
 <?php
 session_start();
-include "loginservice.php";
+include "service/loginservice.php";
 
 $loginService = new LoginService();
 $account = $_SESSION["user"];
@@ -11,6 +11,7 @@ if(empty($account)) {
     return;
 }
 
+// TODO add a service??
 $userDao = new UserDao();
 $userList = $userDao->getAllUserScore();
 ?>

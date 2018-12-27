@@ -1,5 +1,5 @@
 <?php
-include "userdao.php";
+include "dao/userdao.php";
 
 class LoginService {
 	private $userDao;
